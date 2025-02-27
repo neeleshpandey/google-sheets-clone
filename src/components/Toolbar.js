@@ -1,6 +1,30 @@
-import React from 'react';
+// src/components/Toolbar.js
+import React, { useState } from 'react';
+import { useSpreadsheet } from '../context/SpreadsheetContext';
+import { useStyles } from '../context/StylesContext';
 
 const Toolbar = () => {
+  const { selectedCell, sheetData, setSheetData } = useSpreadsheet();
+  const { setBold, setItalic, setTextColor, setBackgroundColor } = useStyles();
+  const [fontFamily, setFontFamily] = useState('Arial');
+  const [fontSize, setFontSize] = useState('12');
+  
+  const handleBoldClick = () => {
+    setBold(selectedCell.row, selectedCell.col, true);
+  };
+  
+  const handleItalicClick = () => {
+    setItalic(selectedCell.row, selectedCell.col, true);
+  };
+  
+  const handleFontChange = (e) => {
+    setFontFamily(e.target.value);
+  };
+  
+  const handleFontSizeChange = (e) => {
+    setFontSize(e.target.value);
+  };
+  
   return (
     <div className="toolbar">
       <div className="toolbar-section">
@@ -28,27 +52,41 @@ const Toolbar = () => {
         </button>
       </div>
       <div className="toolbar-section">
-        <select className="font-selector">
-          <option>Arial</option>
-          <option>Times New Roman</option>
-          <option>Courier New</option>
+        <select 
+          className="font-selector" 
+          value={fontFamily}
+          onChange={handleFontChange}
+        >
+          <option value="Arial">Arial</option>
+          <option value="Times New Roman">Times New Roman</option>
+          <option value="Courier New">Courier New</option>
         </select>
-        <select className="font-size-selector">
-          <option>10</option>
-          <option>11</option>
-          <option>12</option>
-          <option>14</option>
-          <option>16</option>
-          <option>18</option>
-          <option>20</option>
-          <option>24</option>
+        <select 
+          className="font-size-selector"
+          value={fontSize}
+          onChange={handleFontSizeChange}
+        >
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+          <option value="14">14</option>
+          <option value="16">16</option>
+          <option value="18">18</option>
+          <option value="20">20</option>
+          <option value="24">24</option>
         </select>
       </div>
       <div className="toolbar-section">
-        <button className="toolbar-button">
+        <button 
+          className="toolbar-button"
+          onClick={handleBoldClick}
+        >
           <i className="material-icons">format_bold</i>
         </button>
-        <button className="toolbar-button">
+        <button 
+          className="toolbar-button"
+          onClick={handleItalicClick}
+        >
           <i className="material-icons">format_italic</i>
         </button>
         <button className="toolbar-button">
